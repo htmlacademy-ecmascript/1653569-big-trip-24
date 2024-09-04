@@ -1,28 +1,31 @@
 import { createElement } from '../render';
+import { capitalizedString } from '../utils';
+import { FilterType, Attribute } from '../const';
+
+function getFilterAttribute(filter) {
+  switch (filter) {
+    case FilterType.EVERYTHING:
+      return Attribute.CHECKED;
+    default:
+      return '';
+  }
+}
+
+function getFilterItemTemplate(filter) {
+  return (
+    `<div class="trip-filters__filter">
+      <input id="filter-${filter}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${filter}" ${getFilterAttribute(filter)}>
+      <label class="trip-filters__filter-label" for="filter-${filter}">${capitalizedString(filter)}</label>
+    </div>`
+  );
+}
+
+const filtering = Object.values(FilterType).map((filter) => getFilterItemTemplate(filter)).join('');
 
 function createFilterTemplate() {
   return (
     `<form class="trip-filters" action="#" method="get">
-      <div class="trip-filters__filter">
-        <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
-        <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
-      </div>
-
-      <div class="trip-filters__filter">
-        <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="future">
-        <label class="trip-filters__filter-label" for="filter-future">Future</label>
-      </div>
-
-      <div class="trip-filters__filter">
-        <input id="filter-present" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="present">
-        <label class="trip-filters__filter-label" for="filter-present">Present</label>
-      </div>
-
-      <div class="trip-filters__filter">
-        <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="past">
-        <label class="trip-filters__filter-label" for="filter-past">Past</label>
-      </div>
-
+      ${filtering}
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`
   );
