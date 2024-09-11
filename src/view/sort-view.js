@@ -23,9 +23,8 @@ function getSortItemTemplate(type) {
   );
 }
 
-const sorting = Object.values(SortType).map((type) => getSortItemTemplate(type)).join('');
-
 function createSortTemplate() {
+  const sorting = Object.values(SortType).map((type) => getSortItemTemplate(type)).join('');
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">${sorting}</form>`;
 }
 

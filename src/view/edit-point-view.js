@@ -1,4 +1,4 @@
-import { EditType, EventType } from '../const';
+import { EditType, EventType, Attribute } from '../const';
 import { capitalizedString } from '../utils';
 import { createElement } from '../render';
 
@@ -17,7 +17,7 @@ function createEditPointEventTypeTemplate(pointType) {
   return (
     Object.values(EventType).map((type) => (
       `<div class="event__type-item">
-        <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === pointType ? 'checked' : ''}>
+        <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === pointType ? Attribute.CHECKED : ''}>
         <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${capitalizedString(type)}</label>
       </div>`
     )).join('')
@@ -44,7 +44,7 @@ function createEditPointOfferTemplate (offersPoint, offers) {
       const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
       return (
         `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClassName}-1" type="checkbox" name="event-offer-${offerClassName}" ${offers.includes(id) ? 'checked' : ''}>
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClassName}-1" type="checkbox" name="event-offer-${offerClassName}" ${offers.includes(id) ? Attribute.CHECKED : ''}>
         <label class="event__offer-label" for="event-offer-${offerClassName}-1">
           <span class="event__offer-title">${title}</span>
           +€&nbsp;
@@ -60,7 +60,7 @@ function createEditPointOfferTemplate (offersPoint, offers) {
 function createEditPointDestinationTemplate(destinationPoint, editType) {
   if (destinationPoint) {
     return (
-      editType === EditType.ADD
+      editType === EditType.EDIT || !destinationPoint.pictures.length
         ? destinationPoint.description
         : `${destinationPoint.description}
           <div class="event__photos-container">
@@ -96,18 +96,18 @@ function createEditPointButtonNegativeTemplate(editType) {
   );
 }
 
-function createEditPointTemplate(point, offersApp, destinationsApp, editType) {
-  const {basePrice, offers, destination, type} = point;
+function createEditPointTemplate(point, offersPoint, destinationPoint, editType) {
+  const {basePrice, offers, type} = point;
   const eventTypesTemplate = createEditPointEventTypeTemplate(type);
-  const offersPoint = offersApp.find((offer) => offer.type === type);
   const offersTemplate = createEditPointOfferTemplate(offersPoint, offers);
   const offersContainerTemplate = createEditPointOfferContainerTemplate(offersTemplate);
-  const destinationPoint = destinationsApp.find((item) => item.id === destination);
   const destinationTemplate = createEditPointDestinationTemplate(destinationPoint, editType);
   const destinationContainerTemplate = createEditPointDestinationContainerTemplate(destinationTemplate);
   const titleLabelTemplate = capitalizedString(type);
   const titleInputTemplate = destinationPoint ? destinationPoint.name : '';
+  const basePriceTemplate = editType === EditType.EDIT ? basePrice : 0;
   const buttonNegativeTemplate = createEditPointButtonNegativeTemplate(editType);
+
   return (
     `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -152,7 +152,7 @@ function createEditPointTemplate(point, offersApp, destinationsApp, editType) {
               <span class="visually-hidden">Price</span>
               €
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePriceTemplate}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -169,15 +169,15 @@ function createEditPointTemplate(point, offersApp, destinationsApp, editType) {
 }
 
 export default class EditPointView {
-  constructor({point = BLANK_POINT, offers, destinations, editType}) {
+  constructor({point = BLANK_POINT, offers, destination, editType}) {
     this.point = point;
-    this.offersApp = offers;
-    this.destinationsApp = destinations;
+    this.offersPoint = offers;
+    this.destinationPoint = destination;
     this.editType = editType;
   }
 
   getTemplate() {
-    return createEditPointTemplate(this.point, this.offersApp, this.destinationsApp, this.editType);
+    return createEditPointTemplate(this.point, this.offersPoint, this.destinationPoint, this.editType);
   }
 
   getElement() {

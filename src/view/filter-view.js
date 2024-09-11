@@ -20,9 +20,8 @@ function getFilterItemTemplate(filter) {
   );
 }
 
-const filtering = Object.values(FilterType).map((filter) => getFilterItemTemplate(filter)).join('');
-
 function createFilterTemplate() {
+  const filtering = Object.values(FilterType).map((filter) => getFilterItemTemplate(filter)).join('');
   return (
     `<form class="trip-filters" action="#" method="get">
       ${filtering}

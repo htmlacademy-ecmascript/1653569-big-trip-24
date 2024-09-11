@@ -40,8 +40,8 @@ function createPointOffersTemplate(offersPoint, offers) {
   return '';
 }
 
-function createPointTemplate(point, offersApp, destinationsApp) {
-  const {basePrice, dateFrom, dateTo, offers, destination, isFavorite, type} = point;
+function createPointTemplate(point, offersPoint, destinationPoint) {
+  const {basePrice, dateFrom, dateTo, offers, isFavorite, type} = point;
 
   const date = convertDate(dateFrom, DateFormat.DAY);
   const timeStart = convertDate(dateFrom, DateFormat.TIME);
@@ -50,9 +50,7 @@ function createPointTemplate(point, offersApp, destinationsApp) {
   const dateEnd = convertDate(dateFrom, DateFormat.FULL);
   const duration = convertDuration(getEventDuration(dateFrom, dateTo));
 
-  const offersPoint = offersApp.find((offer) => offer.type === type);
   const offersTemplate = createPointOffersTemplate(offersPoint, offers);
-  const destinationPoint = destinationsApp.find((item) => item.id === destination);
   const titleTemplate = createPointTitleTempate(destinationPoint, type);
 
   const favoriteClassName = isFavorite
@@ -97,14 +95,14 @@ function createPointTemplate(point, offersApp, destinationsApp) {
 }
 
 export default class PointView {
-  constructor({point, offers, destinations}) {
+  constructor({point, offers, destination}) {
     this.point = point;
-    this.offersApp = offers;
-    this.destinationsApp = destinations;
+    this.offersPoint = offers;
+    this.destinationPoint = destination;
   }
 
   getTemplate() {
-    return createPointTemplate(this.point, this.offersApp, this.destinationsApp);
+    return createPointTemplate(this.point, this.offersPoint, this.destinationPoint);
   }
 
   getElement() {
