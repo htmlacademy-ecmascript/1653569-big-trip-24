@@ -1,31 +1,44 @@
-export const MAX_POINT_COUNT = 3;
+const EventType = {
+  TAXI: 'taxi',
+  BUS: 'bus',
+  TRAIN: 'train',
+  SHIP: 'ship',
+  DRIVE: 'drive',
+  FLIGHT: 'flight',
+  CHECK_IN: 'check-in',
+  SIGHTSEEING: 'sightseeing',
+  RESTAURANT: 'restaurant'
+};
 
-export const TYPE_EVENTS = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant' ];
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
 
-export const OFFERS = [
-  {
-    title: 'Add luggage',
-    type: 'luggage',
-    price: 30
-  },
-  {
-    title: 'Switch to comfort class',
-    type: 'comfort',
-    price: 100
-  },
-  {
-    title: 'Add meal',
-    type: 'meal',
-    price: 15
-  },
-  {
-    title: 'Choose seats',
-    type: 'seats',
-    price: 5
-  },
-  {
-    title: 'Travel by train',
-    type: 'train',
-    price: 40
-  }
-];
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer'
+};
+
+const Attribute = {
+  CHECKED: 'checked',
+  DISABLED: 'disabled'
+};
+
+const DateFormat = {
+  DAY: 'MMM D',
+  TIME: 'hh:mm',
+  FULL: 'YYYY-MM-DD'
+};
+
+const EditType = {
+  ADD: 'add',
+  EDIT: 'edit'
+};
+
+export { EventType, SortType, FilterType, Attribute, DateFormat, EditType};
