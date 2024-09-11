@@ -9,8 +9,7 @@ const mockPoints = [
     destination: 'destination-01',
     isFavorite: false,
     offers: [
-      'taxi-01',
-      'taxi-02'
+      'taxi-01'
     ],
     type: 'taxi'
   },

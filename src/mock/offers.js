@@ -56,6 +56,7 @@ const mockOffers = [
   },
   {
     type: 'drive',
+    offers: []
   }
 ];
 
