@@ -1,6 +1,6 @@
-import { createElement } from '../render';
-import { capitalizedString } from '../utils';
-import { FilterType, Attribute } from '../const';
+import AbstractView from '../framework/view/abstract-view.js';
+import { capitalizedString } from '../utils.js';
+import { FilterType, Attribute } from '../const.js';
 
 function getFilterAttribute(filter) {
   switch (filter) {
@@ -30,19 +30,8 @@ function createFilterTemplate() {
   );
 }
 
-export default class FilterView {
-  getTemplate() {
+export default class FilterView extends AbstractView {
+  get template() {
     return createFilterTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
