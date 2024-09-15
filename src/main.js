@@ -4,7 +4,7 @@ import MainPresenter from './presenter/main-presenter.js';
 import PointsModel from './model/points-model.js';
 import OffersModel from './model/offers-model.js';
 import DestinatonsModel from './model/destinations-model.js';
-import { render, RenderPosition } from './render.js';
+import { render, RenderPosition } from './framework/render.js';
 
 const infoElement = document.querySelector('.trip-main');
 const filterElement = document.querySelector('.trip-controls__filters');

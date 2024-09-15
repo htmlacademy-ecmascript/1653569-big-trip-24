@@ -1,6 +1,6 @@
-import { SortType, Attribute } from '../const';
-import { capitalizedString } from '../utils';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view.js';
+import { capitalizedString } from '../utils.js';
+import { SortType, Attribute } from '../const.js';
 
 function getSortAttribute(type) {
   switch (type) {
@@ -28,19 +28,8 @@ function createSortTemplate() {
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">${sorting}</form>`;
 }
 
-export default class SortView {
-  getTemplate() {
+export default class SortView extends AbstractView {
+  get template() {
     return createSortTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

@@ -1,6 +1,6 @@
-import { EditType, EventType, Attribute } from '../const';
-import { capitalizedString } from '../utils';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view.js';
+import { capitalizedString } from '../utils.js';
+import { EditType, EventType, Attribute } from '../const.js';
 
 const BLANK_POINT = {
   id: null,
@@ -168,26 +168,43 @@ function createEditPointTemplate(point, offersPoint, destinationPoint, editType)
   );
 }
 
-export default class EditPointView {
-  constructor({point = BLANK_POINT, offers, destination, editType}) {
-    this.point = point;
-    this.offersPoint = offers;
-    this.destinationPoint = destination;
-    this.editType = editType;
+export default class EditPointView extends AbstractView {
+  #point = null;
+  #offersPoint = null;
+  #destinationPoint = null;
+  #editType = null;
+  #handleRollupButtonClick = null;
+  #handleFormSubmit = null;
+
+  constructor({point = BLANK_POINT, offers, destination, editType, onRollupButtonClick, onFormSubmit}) {
+    super();
+    this.#point = point;
+    this.#offersPoint = offers;
+    this.#destinationPoint = destination;
+    this.#editType = editType;
+    this.#handleRollupButtonClick = onRollupButtonClick;
+    this.#handleFormSubmit = onFormSubmit;
+
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#rollupButtonClickHandler);
+
+    this.element
+      .querySelector('.event--edit')
+      .addEventListener('submit', this.#formSubmitHandler);
   }
 
-  getTemplate() {
-    return createEditPointTemplate(this.point, this.offersPoint, this.destinationPoint, this.editType);
+  get template() {
+    return createEditPointTemplate(this.#point, this.#offersPoint, this.#destinationPoint, this.#editType);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
+  #rollupButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleRollupButtonClick();
+  };
 
-  removeElement() {
-    this.element = null;
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 }
