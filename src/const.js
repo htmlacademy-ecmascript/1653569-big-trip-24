@@ -33,7 +33,9 @@ const Attribute = {
 const DateFormat = {
   DAY: 'MMM D',
   TIME: 'hh:mm',
-  FULL: 'YYYY-MM-DD'
+  FULL: 'YYYY-MM-DD',
+  POINT: 'DD,HH,mm',
+  EDIT_POINT: 'DD/MM/YY HH:mm'
 };
 
 const EditType = {

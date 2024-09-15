@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizedString } from '../utils.js';
+import { capitalizedString } from '../utils/common.js';
 import { SortType, Attribute } from '../const.js';
 
 function getSortAttribute(type) {

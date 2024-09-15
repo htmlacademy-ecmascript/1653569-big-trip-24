@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizedString, convertDate, getEventDuration } from '../utils.js';
+import { capitalizedString } from '../utils/common.js';
+import { convertDate, getEventDuration} from '../utils/point.js';
 import { DateFormat } from '../const.js';
 
 const ZERO_TIME = '00';
