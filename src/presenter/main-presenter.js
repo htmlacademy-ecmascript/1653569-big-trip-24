@@ -1,20 +1,24 @@
+import InfoView from '../view/info-view.js';
 import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
 import PointView from '../view/point-view.js';
 import EditPointView from '../view/edit-point-view.js';
-import { render, replace } from '../framework/render.js';
-import { EditType } from '../const.js';
+import EmptyMessageView from '../view/empty-message-view.js';
+import { render, replace, RenderPosition} from '../framework/render.js';
+import { EditType, EmptyMessage } from '../const.js';
 
 export default class MainPresenter {
   #pointListComponent = new PointListView();
   #mainContainer = null;
-  #pointsModel = null;
-  #offersModel = null;
-  #destinationsModel = null;
+  #infoContainer = null;
+  #pointsModel = [];
+  #offersModel = [];
+  #destinationsModel = [];
   #points = [];
 
-  constructor({mainContainer, pointsModel, offersModel, destinationsModel}) {
+  constructor({mainContainer, infoContainer, pointsModel, offersModel, destinationsModel}) {
     this.#mainContainer = mainContainer;
+    this.#infoContainer = infoContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
@@ -57,7 +61,6 @@ export default class MainPresenter {
         replaceFormToPoint();
         document.removeEventListener('keydown', escKeyDownHandler);
       }
-
     });
 
     function replacePointToForm() {
@@ -72,14 +75,20 @@ export default class MainPresenter {
   }
 
   #renderApp() {
+    if (!this.#points.length) {
+      render(new EmptyMessageView({message: EmptyMessage.EVERYTHING}), this.#mainContainer);
+      return;
+    }
+    render(new InfoView(), this.#infoContainer, RenderPosition.AFTERBEGIN);
     render(new SortView(), this.#mainContainer);
     render(this.#pointListComponent, this.#mainContainer);
-    for (let i = 0; i < this.#points.length; i++) {
+    this.#points.forEach((point) => {
+      const { type, destination } = point;
       this.#renderPoint({
-        point: this.#points[i],
-        offers: this.#offersModel.getOffersByType(this.#points[i].type),
-        destination: this.#destinationsModel.getDestinationById(this.#points[i].destination)
+        point: point,
+        offers: this.#offersModel.getOffersByType(type),
+        destination: this.#destinationsModel.getDestinationById(destination)
       });
-    }
+    });
   }
 }

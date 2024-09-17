@@ -33,7 +33,9 @@ const Attribute = {
 const DateFormat = {
   DAY: 'MMM D',
   TIME: 'hh:mm',
-  FULL: 'YYYY-MM-DD'
+  FULL: 'YYYY-MM-DD',
+  POINT: 'DD,HH,mm',
+  EDIT_POINT: 'DD/MM/YY HH:mm'
 };
 
 const EditType = {
@@ -41,4 +43,11 @@ const EditType = {
   EDIT: 'edit'
 };
 
-export { EventType, SortType, FilterType, Attribute, DateFormat, EditType};
+const EmptyMessage = {
+  EVERYTHING: 'Click New Event to create your first point',
+  FUTURE: 'There are no future events now',
+  PRESENT: 'There are no present events now',
+  PAST: 'There are no past events now'
+};
+
+export { EventType, SortType, FilterType, Attribute, DateFormat, EditType, EmptyMessage};

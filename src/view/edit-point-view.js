@@ -1,6 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizedString } from '../utils.js';
-import { EditType, EventType, Attribute } from '../const.js';
+import { capitalizedString } from '../utils/common.js';
+import { EditType, EventType, Attribute, DateFormat } from '../const.js';
+import { convertDate } from '../utils/point.js';
 
 const BLANK_POINT = {
   id: null,
@@ -97,7 +98,10 @@ function createEditPointButtonNegativeTemplate(editType) {
 }
 
 function createEditPointTemplate(point, offersPoint, destinationPoint, editType) {
-  const {basePrice, offers, type} = point;
+  const {basePrice, offers, dateFrom, dateTo, type} = point;
+
+  const dateStart = convertDate(dateFrom, DateFormat.EDIT_POINT);
+  const dateEnd = convertDate(dateTo, DateFormat.EDIT_POINT);
   const eventTypesTemplate = createEditPointEventTypeTemplate(type);
   const offersTemplate = createEditPointOfferTemplate(offersPoint, offers);
   const offersContainerTemplate = createEditPointOfferContainerTemplate(offersTemplate);
@@ -141,10 +145,10 @@ function createEditPointTemplate(point, offersPoint, destinationPoint, editType)
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateStart}">
             —
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateEnd}">
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -184,7 +188,14 @@ export default class EditPointView extends AbstractView {
     this.#editType = editType;
     this.#handleRollupButtonClick = onRollupButtonClick;
     this.#handleFormSubmit = onFormSubmit;
+    this.#setEventListeners();
+  }
 
+  get template() {
+    return createEditPointTemplate(this.#point, this.#offersPoint, this.#destinationPoint, this.#editType);
+  }
+
+  #setEventListeners() {
     this.element
       .querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupButtonClickHandler);
@@ -192,10 +203,6 @@ export default class EditPointView extends AbstractView {
     this.element
       .querySelector('.event--edit')
       .addEventListener('submit', this.#formSubmitHandler);
-  }
-
-  get template() {
-    return createEditPointTemplate(this.#point, this.#offersPoint, this.#destinationPoint, this.#editType);
   }
 
   #rollupButtonClickHandler = (evt) => {
