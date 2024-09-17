@@ -188,7 +188,14 @@ export default class EditPointView extends AbstractView {
     this.#editType = editType;
     this.#handleRollupButtonClick = onRollupButtonClick;
     this.#handleFormSubmit = onFormSubmit;
+    this.#setEventListeners();
+  }
 
+  get template() {
+    return createEditPointTemplate(this.#point, this.#offersPoint, this.#destinationPoint, this.#editType);
+  }
+
+  #setEventListeners() {
     this.element
       .querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupButtonClickHandler);
@@ -196,10 +203,6 @@ export default class EditPointView extends AbstractView {
     this.element
       .querySelector('.event--edit')
       .addEventListener('submit', this.#formSubmitHandler);
-  }
-
-  get template() {
-    return createEditPointTemplate(this.#point, this.#offersPoint, this.#destinationPoint, this.#editType);
   }
 
   #rollupButtonClickHandler = (evt) => {
