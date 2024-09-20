@@ -3,10 +3,10 @@ import MainPresenter from './presenter/main-presenter.js';
 import PointsModel from './model/points-model.js';
 import OffersModel from './model/offers-model.js';
 import DestinatonsModel from './model/destinations-model.js';
-import { render} from './framework/render.js';
+import { render } from './framework/render.js';
 import { generateFilter } from './mock/filter.js';
 
-const infoElement = document.querySelector('.trip-main');
+const headerElement = document.querySelector('.trip-main');
 const filterElement = document.querySelector('.trip-controls__filters');
 const mainElement = document.querySelector('.trip-events');
 
@@ -15,7 +15,7 @@ const offersModel = new OffersModel();
 const destinationsModel = new DestinatonsModel();
 const mainPresenter = new MainPresenter({
   mainContainer: mainElement,
-  infoContainer: infoElement,
+  headerContainer: headerElement,
   pointsModel,
   offersModel,
   destinationsModel

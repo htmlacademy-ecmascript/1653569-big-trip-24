@@ -1,29 +1,28 @@
-import InfoView from '../view/info-view.js';
 import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
 import EmptyMessageView from '../view/empty-message-view.js';
 import PointPresenter from './point-presenter.js';
-import { render, RenderPosition} from '../framework/render.js';
+import HeaderPresenter from './header-presenter.js';
+import { render } from '../framework/render.js';
 import { EmptyMessage } from '../const.js';
 import { updateItem } from '../utils/common.js';
 
 export default class MainPresenter {
-  #infoContainer = null;
   #mainContainer = null;
+  #headerContainer = null;
   #pointsModel = [];
   #offersModel = [];
   #destinationsModel = [];
 
-  #infoComponent = new InfoView();
   #sortComponent = new SortView();
   #pointListComponent = new PointListView();
 
   #points = [];
   #pointPresenters = new Map();
 
-  constructor({mainContainer, infoContainer, pointsModel, offersModel, destinationsModel}) {
+  constructor({mainContainer, headerContainer, pointsModel, offersModel, destinationsModel}) {
     this.#mainContainer = mainContainer;
-    this.#infoContainer = infoContainer;
+    this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
@@ -34,8 +33,11 @@ export default class MainPresenter {
     this.#renderApp();
   }
 
-  #renderInfo() {
-    render(this.#infoComponent, this.#infoContainer, RenderPosition.AFTERBEGIN);
+  #renderHeader() {
+    const headerPresenter = new HeaderPresenter({
+      headerContainer: this.#headerContainer
+    });
+    headerPresenter.init();
   }
 
   #renderSort() {
@@ -71,12 +73,16 @@ export default class MainPresenter {
     this.#pointPresenters.clear();
   }
 
+  #renderEmptyMessage() {
+    render(new EmptyMessageView({message: EmptyMessage.EVERYTHING}), this.#mainContainer);
+  }
+
   #renderApp() {
     if (!this.#points.length) {
-      render(new EmptyMessageView({message: EmptyMessage.EVERYTHING}), this.#mainContainer);
+      this.#renderEmptyMessage();
       return;
     }
-    this.#renderInfo();
+    this.#renderHeader();
     this.#renderSort();
     this.#renderPointList();
     this.#renderPoints();
