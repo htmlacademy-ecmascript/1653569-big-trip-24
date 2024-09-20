@@ -43,6 +43,11 @@ const EditType = {
   EDIT: 'edit'
 };
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
+
 const EmptyMessage = {
   EVERYTHING: 'Click New Event to create your first point',
   FUTURE: 'There are no future events now',
@@ -50,4 +55,4 @@ const EmptyMessage = {
   PAST: 'There are no past events now'
 };
 
-export { EventType, SortType, FilterType, Attribute, DateFormat, EditType, EmptyMessage};
+export { EventType, SortType, FilterType, Attribute, DateFormat, EditType, Mode, EmptyMessage};
