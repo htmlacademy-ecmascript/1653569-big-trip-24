@@ -1,9 +1,9 @@
-import FilterView from './view/filter-view.js';
-import MainPresenter from './presenter/main-presenter.js';
+import HeaderPresenter from './presenter/header-presenter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
+import PointsPresenter from './presenter/points-presenter.js';
 import PointsModel from './model/points-model.js';
 import OffersModel from './model/offers-model.js';
 import DestinatonsModel from './model/destinations-model.js';
-import { render } from './framework/render.js';
 import { generateFilter } from './mock/filter.js';
 
 const headerElement = document.querySelector('.trip-main');
@@ -13,16 +13,22 @@ const mainElement = document.querySelector('.trip-events');
 const pointsModel = new PointsModel();
 const offersModel = new OffersModel();
 const destinationsModel = new DestinatonsModel();
-const mainPresenter = new MainPresenter({
+const filters = generateFilter(pointsModel.points);
+
+const headerPresenter = new HeaderPresenter({
+  headerContainer: headerElement
+});
+const filterPresenter = new FilterPresenter({
+  filterContainer: filterElement,
+  filters
+});
+const pointsPresenter = new PointsPresenter({
   mainContainer: mainElement,
-  headerContainer: headerElement,
   pointsModel,
   offersModel,
   destinationsModel
 });
 
-const filters = generateFilter(pointsModel.points);
-
-render(new FilterView(filters), filterElement);
-
-mainPresenter.init();
+headerPresenter.init();
+filterPresenter.init();
+pointsPresenter.init();
