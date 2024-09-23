@@ -1,35 +1,24 @@
-import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizedString } from '../utils/common.js';
-import { SortType, Attribute } from '../const.js';
+import ItemListView from './item-list-view.js';
+import { capitalizedFirstChar } from '../utils/common.js';
+import { Attribute } from '../const.js';
 
-function getSortAttribute(type) {
-  switch (type) {
-    case SortType.DAY:
-      return Attribute.CHECKED;
-    case SortType.EVENT:
-    case SortType.OFFER:
-      return Attribute.DISABLED;
-    default:
-      return '';
-  }
-}
-
-function getSortItemTemplate(type) {
+function getSortItemTemplate({type, isChecked, isDisabled}) {
   return (
     `<div class="trip-sort__item  trip-sort__item--${type}">
-      <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${type}" ${getSortAttribute(type)}>
-      <label class="trip-sort__btn" for="sort-${type}">${capitalizedString(type)}${type === 'offer' ? 's' : ''}</label>
+      <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio" data-item="${type}" name="trip-sort" value="sort-${type}" ${isChecked ? Attribute.CHECKED : ''} ${isDisabled ? Attribute.DISABLED : ''}>
+      <label class="trip-sort__btn" for="sort-${type}">${capitalizedFirstChar(type)}</label>
     </div>`
   );
 }
 
-function createSortTemplate() {
-  const sorting = Object.values(SortType).map((type) => getSortItemTemplate(type)).join('');
+function createSortTemplate(items) {
+  const sorting = items.map((item) => getSortItemTemplate(item)).join('');
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">${sorting}</form>`;
 }
 
-export default class SortView extends AbstractView {
+export default class SortView extends ItemListView {
+
   get template() {
-    return createSortTemplate();
+    return createSortTemplate(this._items);
   }
 }
