@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizedString } from '../utils/common.js';
+import { capitalizedFirstChar } from '../utils/common.js';
 import { EditType, EventType, Attribute, DateFormat } from '../const.js';
 import { convertDate } from '../utils/point.js';
 
@@ -19,7 +19,7 @@ function createEditPointEventTypeTemplate(pointType) {
     Object.values(EventType).map((type) => (
       `<div class="event__type-item">
         <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === pointType ? Attribute.CHECKED : ''}>
-        <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${capitalizedString(type)}</label>
+        <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${capitalizedFirstChar(type)}</label>
       </div>`
     )).join('')
   );
@@ -107,7 +107,7 @@ function createEditPointTemplate(point, offersPoint, destinationPoint, editType)
   const offersContainerTemplate = createEditPointOfferContainerTemplate(offersTemplate);
   const destinationTemplate = createEditPointDestinationTemplate(destinationPoint, editType);
   const destinationContainerTemplate = createEditPointDestinationContainerTemplate(destinationTemplate);
-  const titleLabelTemplate = capitalizedString(type);
+  const titleLabelTemplate = capitalizedFirstChar(type);
   const titleInputTemplate = destinationPoint ? destinationPoint.name : '';
   const basePriceTemplate = editType === EditType.EDIT ? basePrice : 0;
   const buttonNegativeTemplate = createEditPointButtonNegativeTemplate(editType);

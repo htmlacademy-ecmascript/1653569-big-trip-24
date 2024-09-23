@@ -2,7 +2,7 @@ import SortPresenter from './sort-presenter.js';
 import PointPresenter from './point-presenter.js';
 import PointListView from '../view/point-list-view.js';
 import EmptyMessageView from '../view/empty-message-view.js';
-import { sortPointsByPrice, sortPointsByTime } from '../utils/point.js';
+import { sortPointsByDay, sortPointsByPrice, sortPointsByTime } from '../utils/point.js';
 import { EmptyMessage, SortType } from '../const.js';
 import { updateItem } from '../utils/common.js';
 import { render } from '../framework/render.js';
@@ -16,9 +16,8 @@ export default class PointsPresenter {
   #pointListComponent = new PointListView();
 
   #points = [];
-  #sourcedPoints = [];
   #pointPresenters = new Map();
-  #currentSortType = SortType.DAY;
+  #currentSortType = null;
 
   constructor({mainContainer, pointsModel, offersModel, destinationsModel}) {
     this.#mainContainer = mainContainer;
@@ -29,7 +28,6 @@ export default class PointsPresenter {
 
   init() {
     this.#points = [...this.#pointsModel.points];
-    this.#sourcedPoints = [...this.#pointsModel.points];
 
     if (!this.#points.length) {
       this.#renderEmptyMessage();
@@ -37,35 +35,32 @@ export default class PointsPresenter {
     }
     this.#renderSort();
     this.#renderPointList();
-    this.#renderPoints();
   }
 
   #renderSort() {
     const sortPresenter = new SortPresenter({
       mainContainer: this.#mainContainer,
-      onSortTypeChange: this.#handleSortTypeChange,
+      onSortTypeChange: this.#handleSortTypeChange
     });
 
     sortPresenter.init();
   }
 
   #sortPoints(sortType) {
-    switch (sortType) {
-      case SortType.TIME:
-        this.#points.sort(sortPointsByTime);
-        break;
-      case SortType.PRICE:
-        this.#points.sort(sortPointsByPrice);
-        break;
-      default:
-        this.#points = [...this.#sourcedPoints];
-    }
-
     this.#currentSortType = sortType;
+    switch (sortType) {
+      case SortType.DAY:
+        return this.#points.toSorted(sortPointsByDay);
+      case SortType.TIME:
+        return this.#points.toSorted(sortPointsByTime);
+      case SortType.PRICE:
+        return this.#points.toSorted(sortPointsByPrice);
+    }
   }
 
   #renderPointList() {
     render(this.#pointListComponent, this.#mainContainer);
+    this.#handleSortTypeChange(SortType.DAY);
   }
 
   #renderPoint(props) {
@@ -99,7 +94,6 @@ export default class PointsPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
-    this.#sourcedPoints = updateItem(this.#sourcedPoints, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init({
       point: updatedPoint,
       offers: this.#offersModel.getOffersByType(updatedPoint.type),
@@ -115,7 +109,7 @@ export default class PointsPresenter {
     if (this.#currentSortType === sortType) {
       return;
     }
-    this.#sortPoints(sortType);
+    this.#points = this.#sortPoints(sortType);
     this.#clearPoints();
     this.#renderPoints();
   };

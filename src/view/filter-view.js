@@ -1,5 +1,5 @@
-import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizedString } from '../utils/common.js';
+import ItemListView from './item-list-view.js';
+import { capitalizedFirstChar } from '../utils/common.js';
 import { FilterType, Attribute } from '../const.js';
 
 function getFilterItemTemplate(filter) {
@@ -13,7 +13,7 @@ function getFilterItemTemplate(filter) {
       value="${type}"
       ${type === FilterType.EVERYTHING ? Attribute.CHECKED : ''}
       ${count === 0 ? Attribute.DISABLED : ''}>
-      <label class="trip-filters__filter-label" for="filter-${type}">${capitalizedString(type)}</label>
+      <label class="trip-filters__filter-label" for="filter-${type}">${capitalizedFirstChar(type)}</label>
     </div>`
   );
 }
@@ -28,15 +28,9 @@ function createFilterTemplate(filters) {
   );
 }
 
-export default class FilterView extends AbstractView {
-  #filters = null;
-
-  constructor(filters) {
-    super();
-    this.#filters = filters;
-  }
+export default class FilterView extends ItemListView {
 
   get template() {
-    return createFilterTemplate(this.#filters);
+    return createFilterTemplate(this._items);
   }
 }
