@@ -102,11 +102,11 @@ export default class PointView extends AbstractView {
   #handleRollupButtonClick = null;
   #handleFavoriteClick = null;
 
-  constructor({point, offers, destination, onRollupButtonClick, onFavoriteClick}) {
+  constructor({point, offersPoint, destinationPoint, onRollupButtonClick, onFavoriteClick}) {
     super();
     this.#point = point;
-    this.#offersPoint = offers;
-    this.#destinationPoint = destination;
+    this.#offersPoint = offersPoint;
+    this.#destinationPoint = destinationPoint;
     this.#handleRollupButtonClick = onRollupButtonClick;
     this.#handleFavoriteClick = onFavoriteClick;
     this.#setEventListeners();

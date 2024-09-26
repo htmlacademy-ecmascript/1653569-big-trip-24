@@ -7,27 +7,31 @@ export default class PointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
   #handleModeChange = null;
+  #handlePointTypeChange = null;
+  #handlePointDestinationChange = null;
 
   #pointComponent = null;
   #editPointComponent = null;
 
   #point = null;
-  #offers = null;
-  #destination = null;
+  #offersPoint = null;
+  #destinationPoint = null;
   #editType = null;
 
   #mode = Mode.DEFAULT;
 
-  constructor({pointListContainer, onDataChange, onModeChange}) {
+  constructor({pointListContainer, onDataChange, onModeChange, onPointTypeChange, onPointDestinationChange}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#handlePointTypeChange = onPointTypeChange;
+    this.#handlePointDestinationChange = onPointDestinationChange;
   }
 
-  init({point, offers, destination, editType = EditType.EDIT}) {
+  init({point, offersPoint, destinationPoint, editType = EditType.EDIT}) {
     this.#point = point;
-    this.#offers = offers;
-    this.#destination = destination;
+    this.#offersPoint = offersPoint;
+    this.#destinationPoint = destinationPoint;
     this.#editType = editType;
 
     const prevPointComponent = this.#pointComponent;
@@ -35,19 +39,21 @@ export default class PointPresenter {
 
     this.#pointComponent = new PointView({
       point: this.#point,
-      offers: this.#offers,
-      destination: this.#destination,
+      offersPoint: this.#offersPoint,
+      destinationPoint: this.#destinationPoint,
       onRollupButtonClick: this.#handleRollupButtonClick,
       onFavoriteClick: this.#handleFavoriteClick
     });
 
     this.#editPointComponent = new EditPointView({
       point: this.#point,
-      offers: this.#offers,
-      destination: this.#destination,
+      offersPoint: this.#offersPoint,
+      destinationPoint: this.#destinationPoint,
       editType: this.#editType,
       onRollupButtonClick: this.#handleRollupButtonClick,
-      onFormSubmit: this.#handleFormSubmit
+      onFormSubmit: this.#handleFormSubmit,
+      onPointTypeChange: this.#handlePointTypeChange,
+      onPointDestinationChange: this.#handlePointDestinationChange
     });
 
     if (!prevPointComponent || !prevEditPointComponent) {
@@ -74,6 +80,7 @@ export default class PointPresenter {
 
   resetView() {
     if (this.#mode === Mode.EDITING) {
+      this.#editPointComponent.reset(this.#point, this.#offersPoint, this.#destinationPoint);
       this.#replaceFormToPoint();
     }
   }
@@ -94,6 +101,7 @@ export default class PointPresenter {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
+      this.#editPointComponent.reset(this.#point, this.#offersPoint);
       this.#replaceFormToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
@@ -101,6 +109,7 @@ export default class PointPresenter {
 
   #handleRollupButtonClick = () => {
     if (this.#mode === Mode.EDITING) {
+      this.#editPointComponent.reset(this.#point, this.#offersPoint, this.#destinationPoint);
       this.#replaceFormToPoint();
       return;
     }
