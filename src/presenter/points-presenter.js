@@ -67,7 +67,9 @@ export default class PointsPresenter {
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#pointListComponent.element,
       onDataChange: this.#handlePointChange,
-      onModeChange: this.#handleModeChange
+      onModeChange: this.#handleModeChange,
+      onPointTypeChange: this.#handlePointTypeChange,
+      onPointDestinationChange: this.#handlePointDestinationChange
     });
     pointPresenter.init(props);
     this.#pointPresenters.set(props.point.id, pointPresenter);
@@ -77,8 +79,8 @@ export default class PointsPresenter {
     this.#points.forEach((point) => {
       this.#renderPoint({
         point,
-        offers: this.#offersModel.getOffersByType(point.type),
-        destination: this.#destinationsModel.getDestinationById(point.destination)
+        offersPoint: this.#offersModel.getOffersByType(point.type),
+        destinationPoint: this.#destinationsModel.getDestinationById(point.destination)
       });
     });
   }
@@ -96,8 +98,8 @@ export default class PointsPresenter {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init({
       point: updatedPoint,
-      offers: this.#offersModel.getOffersByType(updatedPoint.type),
-      destination: this.#destinationsModel.getDestinationById(updatedPoint.destination)
+      offersPoint: this.#offersModel.getOffersByType(updatedPoint.type),
+      destinationPoint: this.#destinationsModel.getDestinationById(updatedPoint.destination)
     });
   };
 
@@ -113,4 +115,7 @@ export default class PointsPresenter {
     this.#clearPoints();
     this.#renderPoints();
   };
+
+  #handlePointTypeChange = (type) => this.#offersModel.getOffersByType(type);
+  #handlePointDestinationChange = (name) =>this.#destinationsModel.getDestinationByName(name);
 }
