@@ -192,6 +192,7 @@ function createEditPointTemplate(state, editType) {
 }
 
 export default class EditPointView extends AbstractStatefulView {
+  #point = null;
   #offersPoint = null;
   #destinationPoint = null;
   #editType = null;
@@ -211,6 +212,7 @@ export default class EditPointView extends AbstractStatefulView {
     onPointDestinationChange
   }) {
     super();
+    this.#point = point;
     this.#offersPoint = offersPoint;
     this.#destinationPoint = destinationPoint;
     this.#editType = editType;
@@ -218,7 +220,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handlePointTypeChange = onPointTypeChange;
     this.#handlePointDestinationChange = onPointDestinationChange;
-    this._setState(EditPointView.parsePointToState(point, this.#offersPoint.offers, this.#destinationPoint));
+    this._setState(EditPointView.parsePointToState(this.#point, this.#offersPoint.offers, this.#destinationPoint));
     this.#setEventListeners();
   }
 
@@ -226,8 +228,8 @@ export default class EditPointView extends AbstractStatefulView {
     return createEditPointTemplate(this._state, this.#editType);
   }
 
-  reset(point, offersPoint, destinationPoint) {
-    this.updateElement(EditPointView.parsePointToState(point, offersPoint.offers, destinationPoint));
+  reset(point, offersPoint, destinationPoint, basePrice) {
+    this.updateElement(EditPointView.parsePointToState(point, offersPoint.offers, destinationPoint, basePrice));
   }
 
   _restoreHandlers() {
@@ -250,8 +252,12 @@ export default class EditPointView extends AbstractStatefulView {
       .addEventListener('change', this.#pointTypeChangeHandler);
 
     this.element
-      .querySelector('.event__input')
+      .querySelector('.event__input--destination')
       .addEventListener('change', this.#pointDestinationChangeHandler);
+
+    this.element
+      .querySelector('.event__input--price')
+      .addEventListener('change', this.#pointPriceChangeHandler);
   }
 
   #rollupButtonClickHandler = (evt) => {
@@ -261,7 +267,11 @@ export default class EditPointView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
+    this.#handleFormSubmit(EditPointView.parseStateToPoint({
+      ...this._state,
+      offers: this._state.offersPoint.map((offer) => offer.id),
+      destination: this._state.destinationPoint.id
+    }));
   };
 
   #pointTypeChangeHandler = (evt) => {
@@ -279,6 +289,13 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
+  #pointPriceChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      basePrice: evt.target.value
+    });
+  };
+
   static parsePointToState(point, offersPoint, destinationPoint) {
     return {
       ...point,
@@ -288,19 +305,17 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   static parseStateToPoint(state) {
-    const point = {...state};
-
-    if (!point.offersPoint) {
-      point.offersPoint = [];
+    if (!state.offersPoint) {
+      state.offersPoint = [];
     }
 
-    if (!point.destinationPoint) {
-      point.destinationPoint = null;
+    if (!state.destinationPoint) {
+      state.destinationPoint = null;
     }
 
-    delete point.offersPoint;
-    delete point.destinationPoint;
+    delete state.offersPoint;
+    delete state.destinationPoint;
 
-    return point;
+    return state;
   }
 }
