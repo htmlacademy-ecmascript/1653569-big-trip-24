@@ -66,6 +66,7 @@ export default class PointsPresenter {
   #renderPoint(props) {
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#pointListComponent.element,
+      destinationNames: this.#destinationsModel.destinationNames,
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange,
       onPointTypeChange: this.#handlePointTypeChange,
@@ -80,7 +81,7 @@ export default class PointsPresenter {
       this.#renderPoint({
         point,
         offersPoint: this.#offersModel.getOffersByType(point.type),
-        destinationPoint: this.#destinationsModel.getDestinationById(point.destination)
+        destinationPoint: this.#destinationsModel.getDestinationById(point.destination),
       });
     });
   }
