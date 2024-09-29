@@ -31,11 +31,12 @@ const Attribute = {
 };
 
 const DateFormat = {
-  DAY: 'MMM D',
-  TIME: 'hh:mm',
+  DAY: 'MMM DD',
+  TIME: 'HH:mm',
   FULL: 'YYYY-MM-DD',
-  POINT: 'DD,HH,mm',
-  EDIT_POINT: 'DD/MM/YY HH:mm'
+  IN_DAYS: 'DD[D] HH[H] mm[M]',
+  IN_HOURS: 'HH[H] mm[M]',
+  IN_MINUTES: 'mm[M]'
 };
 
 const EditType = {
@@ -44,8 +45,8 @@ const EditType = {
 };
 
 const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING'
+  DEFAULT: 'default',
+  EDITING: 'editing'
 };
 
 const EmptyMessage = {

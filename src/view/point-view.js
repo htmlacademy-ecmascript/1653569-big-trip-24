@@ -1,21 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { convertDate, getEventDuration} from '../utils/point.js';
+import { convertDate, getEventDiff, convertDuration} from '../utils/point.js';
 import { DateFormat } from '../const.js';
-
-const ZERO_TIME = '00';
-
-function convertDuration(duration) {
-  const [days, hours, minutes] = duration.split(',');
-  switch (true) {
-    case days !== ZERO_TIME:
-      return `${days}D ${hours}H ${minutes}M`;
-    case hours !== ZERO_TIME:
-      return `${hours}H ${minutes}M`;
-    default:
-      return `${minutes}M`;
-  }
-}
 
 function createPointTitleTempate(destination, type) {
   const title = capitalizedFirstChar(type);
@@ -48,11 +34,11 @@ function createPointTemplate(point, offersPoint, destinationPoint) {
   const timeStart = convertDate(dateFrom, DateFormat.TIME);
   const timeEnd = convertDate(dateTo, DateFormat.TIME);
   const dateStart = convertDate(dateFrom, DateFormat.FULL);
-  const dateEnd = convertDate(dateFrom, DateFormat.FULL);
-  const duration = convertDuration(getEventDuration(dateFrom, dateTo));
+  const dateEnd = convertDate(dateTo, DateFormat.FULL);
+  const duration = convertDuration(getEventDiff(dateFrom, dateTo));
 
-  const offersTemplate = createPointOffersTemplate(offersPoint, offers);
   const titleTemplate = createPointTitleTempate(destinationPoint, type);
+  const offersTemplate = createPointOffersTemplate(offersPoint, offers);
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn event__favorite-btn--active'
