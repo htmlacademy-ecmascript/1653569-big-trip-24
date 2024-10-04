@@ -39,21 +39,44 @@ const DateFormat = {
   IN_MINUTES: 'mm[M]'
 };
 
-const EditType = {
-  ADD: 'add',
-  EDIT: 'edit'
+const EditMode = {
+  ADD: 'ADD',
+  EDIT: 'EDIT'
 };
 
 const Mode = {
-  DEFAULT: 'default',
-  EDITING: 'editing'
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
 };
 
-const EmptyMessage = {
+const Message = {
   EVERYTHING: 'Click New Event to create your first point',
   FUTURE: 'There are no future events now',
   PRESENT: 'There are no present events now',
   PAST: 'There are no past events now'
 };
 
-export { EventType, SortType, FilterType, Attribute, DateFormat, EditType, Mode, EmptyMessage};
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export {
+  EventType,
+  SortType,
+  FilterType,
+  Attribute,
+  DateFormat,
+  EditMode,
+  Mode,
+  Message,
+  UserAction,
+  UpdateType
+};

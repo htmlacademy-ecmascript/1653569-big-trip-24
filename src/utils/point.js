@@ -44,6 +44,7 @@ function convertDuration(eventDiff) {
 const sortPointsByDay = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 const sortPointsByTime = (pointA, pointB) => dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom)) - dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
 const sortPointsByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
+const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 
 export {
   convertDate,
@@ -54,5 +55,6 @@ export {
   sortPointsByDay,
   sortPointsByTime,
   sortPointsByPrice,
-  convertDuration
+  convertDuration,
+  isDatesEqual
 };
