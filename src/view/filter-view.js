@@ -1,19 +1,23 @@
 import ItemListView from './item-list-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { FilterType, Attribute } from '../const.js';
+import { Attribute } from '../const.js';
 
-function getFilterItemTemplate(filter) {
-  const { type, count } = filter;
+function getFilterItemTemplate({type, isChecked, isDisabled}) {
   return (
     `<div class="trip-filters__filter">
       <input
-      id="filter-${type}"
-      class="trip-filters__filter-input  visually-hidden"
-      type="radio" name="trip-filter"
-      value="${type}"
-      ${type === FilterType.EVERYTHING ? Attribute.CHECKED : ''}
-      ${count === 0 ? Attribute.DISABLED : ''}>
-      <label class="trip-filters__filter-label" for="filter-${type}">${capitalizedFirstChar(type)}</label>
+        id="filter-${type}"
+        class="trip-filters__filter-input  visually-hidden"
+        type="radio"
+        name="trip-filter"
+        data-item="${type}"
+        value="filter-${type}"
+        ${isChecked ? Attribute.CHECKED : ''}
+        ${isDisabled ? Attribute.DISABLED : ''}
+      >
+      <label class="trip-filters__filter-label" for="filter-${type}">
+        ${capitalizedFirstChar(type)}
+      </label>
     </div>`
   );
 }
