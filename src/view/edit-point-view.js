@@ -6,8 +6,10 @@ import flatpickr from 'flatpickr';
 import he from 'he';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const DEFAULT_PRICE = 0;
+
 const BLANK_POINT = {
-  basePrice: 0,
+  basePrice: DEFAULT_PRICE,
   dateFrom: '',
   dateTo: '',
   destination: '',
@@ -52,8 +54,8 @@ function createEditPointOfferContainerTemplate(offersTemplate) {
   return '';
 }
 
-function createEditPointOfferTemplate (offers, currentOffers = []) {
-  if (currentOffers.length) {
+function createEditPointOfferTemplate (offers, currentOffers) {
+  if (currentOffers) {
     return currentOffers.map(({title, price, id}) => {
       const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
       return (
@@ -127,7 +129,7 @@ function createEditPointTemplate(state, offersPoint, destinationsPoint, editMode
   const {basePrice, dateFrom, dateTo, destination, offers, type } = state;
 
   const currentDestination = destinationsPoint.find((destinationPoint) => destinationPoint.id === destination);
-  const currentOffers = offersPoint.find((offer) => offer.type === type).offers;
+  const currentOffers = offersPoint.find((offer) => offer.type === type)?.offers;
   const destinationNames = destinationsPoint.map((destinationPoint) => destinationPoint.name);
 
   const dateStart = convertDate(dateFrom, DateFormat.EDIT_POINT);
@@ -344,7 +346,7 @@ export default class EditPointView extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     const offersChecked = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    const currentOffers = this.#offersPoint.find((offer) => offer.type === this._state.type).offers;
+    const currentOffers = this.#offersPoint.find((offer) => offer.type === this._state.type)?.offers || [];
     this.#handleFormSubmit(EditPointView.parseStateToPoint({
       ...this._state,
       offers: currentOffers.map((offer, index) => offersChecked[index] ? offer.id : '').filter(Boolean),
@@ -386,7 +388,7 @@ export default class EditPointView extends AbstractStatefulView {
   #pointPriceChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateElement({
-      basePrice: he.encode(String(parseInt(evt.target.value, 10)))
+      basePrice: he.encode(String(parseInt(evt.target.value, 10))) || DEFAULT_PRICE
     });
   };
 
