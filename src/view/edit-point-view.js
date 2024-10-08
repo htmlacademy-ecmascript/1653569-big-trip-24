@@ -186,7 +186,7 @@ function createEditPointTemplate(state, offersPoint, destinationsPoint, editMode
               <span class="visually-hidden">Price</span>
               €
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(String(basePrice))}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -387,8 +387,9 @@ export default class EditPointView extends AbstractStatefulView {
 
   #pointPriceChangeHandler = (evt) => {
     evt.preventDefault();
+    const price = parseInt(evt.target.value, 10);
     this.updateElement({
-      basePrice: he.encode(String(parseInt(evt.target.value, 10))) || DEFAULT_PRICE
+      basePrice: price > DEFAULT_PRICE ? price : DEFAULT_PRICE
     });
   };
 

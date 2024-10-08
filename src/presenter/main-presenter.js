@@ -5,15 +5,25 @@ import PointsModel from '../model/points-model.js';
 import OffersModel from '../model/offers-model.js';
 import DestinatonsModel from '../model/destinations-model.js';
 import FilterModel from '../model/filters-model.js';
+import PointsApiService from '../points-api-service.js';
+
+const AUTHTORIZATOIN = 'Basic 2rHj3c1Jlz0Ks36';
+const END_POINT = 'https://24.objects.htmlacademy.pro';
 
 const headerElement = document.querySelector('.trip-main');
 const filterElement = document.querySelector('.trip-controls__filters');
 const mainElement = document.querySelector('.trip-events');
 
-const pointsModel = new PointsModel();
-const offersModel = new OffersModel();
-const destinationsModel = new DestinatonsModel();
+const pointsApiService = new PointsApiService(END_POINT, AUTHTORIZATOIN);
+
 const filterModel = new FilterModel();
+const offersModel = new OffersModel({pointsApiService});
+const destinationsModel = new DestinatonsModel({pointsApiService});
+const pointsModel = new PointsModel({
+  pointsApiService,
+  offersModel,
+  destinationsModel
+});
 
 const headerPresenter = new HeaderPresenter({
   headerContainer: headerElement
@@ -39,5 +49,6 @@ export default class MainPresenter {
     headerPresenter.init({renderAddPointForm: pointsPresenter.renderAddPointForm});
     filterPresenter.init();
     pointsPresenter.init();
+    pointsModel.init();
   }
 }
