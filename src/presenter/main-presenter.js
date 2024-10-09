@@ -5,10 +5,10 @@ import PointsModel from '../model/points-model.js';
 import OffersModel from '../model/offers-model.js';
 import DestinatonsModel from '../model/destinations-model.js';
 import FilterModel from '../model/filters-model.js';
-import PointsApiService from '../points-api-service.js';
+import PointsApiService from '../service/points-api-service.js';
 
 const AUTHTORIZATOIN = 'Basic 2rHj3c1Jlz0Ks36';
-const END_POINT = 'https://24.objects.htmlacademy.pro';
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 
 const headerElement = document.querySelector('.trip-main');
 const filterElement = document.querySelector('.trip-controls__filters');
