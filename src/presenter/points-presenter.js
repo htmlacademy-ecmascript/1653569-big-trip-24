@@ -2,7 +2,8 @@ import SortPresenter from './sort-presenter.js';
 import PointPresenter from './point-presenter.js';
 import AddPointPresenter from './add-point-presenter.js';
 import PointListView from '../view/point-list-view.js';
-import MessageView from '../view/message-view.js';
+import EmptyPointListView from '../view/empty-point-list-view.js';
+import LoadingView from '../view/loading-view.js';
 import { sortPointsByDay, sortPointsByPrice, sortPointsByTime } from '../utils/point.js';
 import { SortType, FilterType, UserAction, UpdateType } from '../const.js';
 import { remove, render } from '../framework/render.js';
@@ -20,10 +21,12 @@ export default class PointsPresenter {
   #addPointPresenter = null;
   #headerPresenter = null;
   #pointListComponent = new PointListView();
-  #messageComponent = null;
+  #loadingComponent = new LoadingView();
+  #emptyPointListComponent = null;
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
   #isAddPointFormOpened = false;
+  #isLoading = true;
 
   constructor({mainContainer, pointsModel, offersModel, destinationsModel, filterModel, headerPresenter}) {
     this.#mainContainer = mainContainer;
@@ -100,8 +103,13 @@ export default class PointsPresenter {
   }
 
   #renderApp() {
+    if(this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     if (!this.points.length && !this.#isAddPointFormOpened) {
-      this.#renderMessage();
+      this.#renderEmptyPointList();
       return;
     }
 
@@ -116,8 +124,10 @@ export default class PointsPresenter {
     this.#sortPresenter.remove();
     this.#addPointPresenter.destroy();
 
-    if (this.#messageComponent){
-      remove(this.#messageComponent);
+    remove(this.#loadingComponent);
+
+    if (this.#emptyPointListComponent){
+      remove(this.#emptyPointListComponent);
     }
 
     if (resetSortType) {
@@ -125,11 +135,16 @@ export default class PointsPresenter {
     }
   }
 
-  #renderMessage() {
-    this.#messageComponent = new MessageView({
+  #renderEmptyPointList() {
+    this.#emptyPointListComponent = new EmptyPointListView({
       filterType: this.#filterType
     });
-    render(this.#messageComponent, this.#mainContainer);
+    remove(this.#pointListComponent);
+    render(this.#emptyPointListComponent, this.#mainContainer);
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#mainContainer);
   }
 
   #handleSortTypeChange = (sortType) => {
@@ -166,6 +181,11 @@ export default class PointsPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearApp({resetSortType: true});
+        this.#renderApp();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderApp();
         break;
     }

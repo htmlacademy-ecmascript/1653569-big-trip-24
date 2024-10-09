@@ -9,14 +9,14 @@ const MessageTextType = {
 
 };
 
-function createMessageTemplate(filterType) {
+function createEmptyPointListTemplate(filterType) {
   const messageTextValue = MessageTextType[filterType];
   return (
     `<p class="trip-events__msg">${messageTextValue}</p>`
   );
 }
 
-export default class MessageView extends AbstractView {
+export default class EmptyPointListView extends AbstractView {
   #filterType = null;
 
   constructor({filterType}) {
@@ -25,7 +25,7 @@ export default class MessageView extends AbstractView {
   }
 
   get template() {
-    return createMessageTemplate(this.#filterType);
+    return createEmptyPointListTemplate(this.#filterType);
   }
 }
 
