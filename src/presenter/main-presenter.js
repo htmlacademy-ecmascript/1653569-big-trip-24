@@ -37,7 +37,7 @@ const filterPresenter = new FilterPresenter({
 
 const pointsPresenter = new PointsPresenter({
   mainContainer: mainElement,
-  headerPresenter: headerPresenter,
+  headerPresenter,
   pointsModel,
   offersModel,
   destinationsModel,

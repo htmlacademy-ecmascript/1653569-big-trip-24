@@ -1,9 +1,7 @@
 import { DateFormat } from '../const';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import duration from 'dayjs/plugin/duration';
 import isBetween from 'dayjs/plugin/isBetween';
-dayjs.extend(utc);
 dayjs.extend(duration);
 dayjs.extend(isBetween);
 
@@ -16,7 +14,7 @@ const Milliseconds = {
   IN_DAY: 86400000
 };
 
-const convertDate = (date, format) => date ? dayjs(date).utc().local().format(format) : '';
+const convertDate = (date, format) => date ? dayjs(date).format(format) : '';
 const getEventDiff = (start, end) => dayjs(end).diff(dayjs(start).set('second', 0).set('millisecond', 0));
 const isFuturePoint = ({dateFrom}) => dayjs().isBefore(dateFrom);
 const isPresentPoint = ({dateFrom, dateTo}) => dayjs(new Date()).isBetween(dateFrom, dayjs(dateTo));
