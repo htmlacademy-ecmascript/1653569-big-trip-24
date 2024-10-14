@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-import { showErrorMessage } from '../utils/common.js';
+import { ApiEndpoint } from '../utils/const.js';
 
 export default class DestinatonsModel extends Observable {
   #destinations = [];
@@ -18,8 +18,7 @@ export default class DestinatonsModel extends Observable {
     try {
       this.#destinations = await this.#pointsApiSevrice.destinations;
     } catch (error) {
-      this.#destinations = [];
-      showErrorMessage('destinations');
+      throw new Error(ApiEndpoint.DESTINATIONS);
     }
   }
 

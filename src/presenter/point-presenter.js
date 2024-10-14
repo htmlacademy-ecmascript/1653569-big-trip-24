@@ -1,7 +1,7 @@
 import PointView from '../view/point-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import { remove, render, replace } from '../framework/render.js';
-import { EditMode as EditMode, Mode, UserAction, UpdateType } from '../const.js';
+import { EditMode, Mode, UserAction, UpdateType } from '../utils/const.js';
 import { isDatesEqual } from '../utils/point.js';
 
 export default class PointPresenter {

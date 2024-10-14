@@ -1,22 +1,10 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { EditMode, EventType, Attribute, DateFormat } from '../const.js';
+import { BLANK_POINT, DEFAULT_PRICE, WORD_LENGTH, EditMode, EventType, DateFormat } from '../utils/const.js';
 import { convertDate } from '../utils/point.js';
 import flatpickr from 'flatpickr';
-import he from 'he';
 import 'flatpickr/dist/flatpickr.min.css';
-
-const DEFAULT_PRICE = 0;
-
-const BLANK_POINT = {
-  basePrice: DEFAULT_PRICE,
-  dateFrom: '',
-  dateTo: '',
-  destination: '',
-  isFavorite: false,
-  offers: [],
-  type: EventType.FLIGHT
-};
+import he from 'he';
 
 function createEditPointEventTypeTemplate(pointType, isDisabled) {
   return (
@@ -28,7 +16,7 @@ function createEditPointEventTypeTemplate(pointType, isDisabled) {
           type="radio"
           name="event-type"
           value="${type}"
-          ${type === pointType ? Attribute.CHECKED : ''}
+          ${type === pointType ? 'checked' : ''}
           ${isDisabled ? 'disabled' : ''}
         >
         <label
@@ -58,21 +46,21 @@ function createEditPointOfferContainerTemplate(offersTemplate) {
 function createEditPointOfferTemplate (offers, currentOffers, isDisabled) {
   if (currentOffers) {
     return currentOffers.map(({title, price, id}) => {
-      const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
+      const slug = title.split(' ').filter((word) => word.length >= WORD_LENGTH).slice(0, 2).join('-').toLowerCase();
       return (
         `<div class="event__offer-selector">
           <input
             class="event__offer-checkbox visually-hidden"
-            id="event-offer-${offerClassName}-1"
+            id="event-offer-${slug}"
             type="checkbox"
-            name="event-offer-${offerClassName}"
+            name="event-offer-${slug}"
             data-offer-id="${id}"
-            ${offers.includes(id) ? Attribute.CHECKED : ''}
+            ${offers.includes(id) ? 'checked' : ''}
             ${isDisabled ? 'disabled' : ''}
           >
           <label
             class="event__offer-label"
-            for="event-offer-${offerClassName}-1">
+            for="event-offer-${slug}">
             <span class="event__offer-title">${title}</span>
             +€&nbsp;
             <span class="event__offer-price">${price}</span>
@@ -298,7 +286,11 @@ export default class EditPointView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event__input--destination')
-      .addEventListener('click', this.#pointDestinationClickHandler);
+      .addEventListener('focusin', this.#pointDestinationFocusinHandler);
+
+    this.element
+      .querySelector('.event__input--destination')
+      .addEventListener('focusout', this.#pointDestinationFocusoutHandler);
 
     this.element
       .querySelector('.event__input--destination')
@@ -352,9 +344,17 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
-  #pointDestinationClickHandler = (evt) => {
+  #pointDestinationFocusinHandler = (evt) => {
     evt.preventDefault();
+    this._setState({
+      destinationValue: evt.target.value
+    });
     evt.target.value = '';
+  };
+
+  #pointDestinationFocusoutHandler = (evt) => {
+    evt.preventDefault();
+    evt.target.value = this._state.destinationValue;
   };
 
   #pointPriceChangeHandler = (evt) => {
@@ -406,6 +406,7 @@ export default class EditPointView extends AbstractStatefulView {
       ...point,
       offersPoint,
       destinationPoint,
+      destinationValue: null,
       isDisabled: false,
       isSaving: false,
       isDeleting: false
@@ -423,6 +424,7 @@ export default class EditPointView extends AbstractStatefulView {
 
     delete state.offersPoint;
     delete state.destinationPoint;
+    delete state.destinationValue;
     delete state.isDisabled;
     delete state.isSaving;
     delete state.isDeleting;

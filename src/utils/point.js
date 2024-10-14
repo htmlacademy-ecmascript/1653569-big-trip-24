@@ -1,18 +1,9 @@
-import { DateFormat } from '../const';
+import { MIN_MONTH_COUNT, DAYS_IN_MONTH, CHAR_DAY, DateFormat, Milliseconds } from './const.js';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import isBetween from 'dayjs/plugin/isBetween';
 dayjs.extend(duration);
 dayjs.extend(isBetween);
-
-const MIN_MONTH_COUNT = 0;
-const DAYS_IN_MONTH = 30;
-const CHAR_DAY = 'D';
-
-const Milliseconds = {
-  IN_HOUR: 3600000,
-  IN_DAY: 86400000
-};
 
 const convertDate = (date, format) => date ? dayjs(date).format(format) : '';
 const getEventDiff = (start, end) => dayjs(end).diff(dayjs(start).set('second', 0).set('millisecond', 0));
@@ -42,7 +33,7 @@ function convertDuration(eventDiff) {
 const sortPointsByDay = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 const sortPointsByTime = (pointA, pointB) => dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom)) - dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
 const sortPointsByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
-const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, CHAR_DAY);
 
 export {
   convertDate,

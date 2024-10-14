@@ -1,6 +1,6 @@
 import EditPointView from '../view/edit-point-view.js';
-import { EditMode, UserAction, UpdateType } from '../const';
-import { render, RenderPosition, remove } from '../framework/render.js';
+import { EditMode, UserAction, UpdateType } from '../utils/const.js';
+import { RenderPosition, render, remove } from '../framework/render.js';
 
 export default class AddPointPresenter {
   #destinationsModel = null;

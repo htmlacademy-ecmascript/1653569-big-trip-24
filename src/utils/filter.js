@@ -1,4 +1,4 @@
-import { FilterType } from '../const';
+import { FilterType } from './const';
 import { isFuturePoint, isPresentPoint, isPastPoint } from './point';
 
 const filter = {

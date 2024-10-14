@@ -1,6 +1,6 @@
 import Observable from '../framework/observable.js';
 import PointsAdapterService from '../service/points-adapter-service.js';
-import { UpdateType } from '../const.js';
+import { UpdateType, ErrorMessage } from '../utils/const.js';
 
 export default class PointsModel extends Observable {
   #points = [];
@@ -22,16 +22,13 @@ export default class PointsModel extends Observable {
 
   async init() {
     try {
-      await this.#offersModel.init();
-      await this.#destiationModel.init();
+      await Promise.all([this.#offersModel.init(), this.#destiationModel.init()]);
       const points = await this.#pointsApiSevrice.points;
       this.#points = points.map(this.#pointsAdapterService.adaptToClient);
       this._notify(UpdateType.INIT);
     } catch (error) {
-      this.#points = [];
-      this.#offersModel = [];
-      this.#destiationModel = [];
-      this._notify(UpdateType.ERROR);
+      this._notify(UpdateType.ERROR, error.message);
+      throw error;
     }
   }
 
@@ -42,7 +39,7 @@ export default class PointsModel extends Observable {
       this.#points = this.#points.map((point) => point.id === update.id ? updatedPoint : point);
       this._notify(updateType, updatedPoint);
     } catch (error) {
-      throw new Error('Can\'t update point');
+      throw new Error(ErrorMessage.UPDATE);
     }
   }
 
@@ -53,7 +50,7 @@ export default class PointsModel extends Observable {
       this.#points = [newPoint, ...this.#points];
       this._notify(updateType, update);
     } catch (error) {
-      throw new Error('Can\'t add point');
+      throw new Error(ErrorMessage.ADD);
     }
   }
 
@@ -63,7 +60,7 @@ export default class PointsModel extends Observable {
       this.#points = this.#points.filter((point) => point.id !== update.id);
       this._notify(updateType);
     } catch (error) {
-      throw new Error('Can\'t delete point');
+      throw new Error(ErrorMessage.DELETE);
     }
   }
 }

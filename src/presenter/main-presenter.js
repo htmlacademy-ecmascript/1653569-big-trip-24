@@ -6,9 +6,7 @@ import OffersModel from '../model/offers-model.js';
 import DestinatonsModel from '../model/destinations-model.js';
 import FilterModel from '../model/filters-model.js';
 import PointsApiService from '../service/points-api-service.js';
-
-const AUTHTORIZATOIN = 'Basic 2rHj3c1Jlz0Ks36';
-const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+import { AUTHTORIZATOIN, END_POINT } from '../utils/const.js';
 
 const headerElement = document.querySelector('.trip-main');
 const filterElement = document.querySelector('.trip-controls__filters');
