@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
 import { convertDate, getEventDiff, convertDuration} from '../utils/point.js';
-import { DateFormat } from '../const.js';
+import { DateFormat } from '../utils/const.js';
 
 function createPointTitleTempate(destination, type) {
   const title = capitalizedFirstChar(type);

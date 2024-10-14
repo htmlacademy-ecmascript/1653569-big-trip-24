@@ -1,6 +1,5 @@
 import ItemListView from './item-list-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { Attribute } from '../const.js';
 
 function getSortItemTemplate({type, isChecked, isDisabled}) {
   return (
@@ -12,8 +11,8 @@ function getSortItemTemplate({type, isChecked, isDisabled}) {
         name="trip-sort"
         data-item="${type}"
         value="sort-${type}"
-        ${isChecked ? Attribute.CHECKED : ''}
-        ${isDisabled ? Attribute.DISABLED : ''}
+        ${isChecked ? 'checked' : ''}
+        ${isDisabled ? 'disabled' : ''}
       >
       <label class="trip-sort__btn" for="sort-${type}">
         ${capitalizedFirstChar(type)}

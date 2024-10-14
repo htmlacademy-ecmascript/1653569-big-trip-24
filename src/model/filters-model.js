@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-import { FilterType } from '../const.js';
+import { FilterType } from '../utils/const.js';
 
 
 export default class FilersModel extends Observable {

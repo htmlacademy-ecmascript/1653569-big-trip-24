@@ -1,6 +1,5 @@
 import ItemListView from './item-list-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { Attribute } from '../const.js';
 
 function getFilterItemTemplate({type, isChecked, isDisabled}) {
   return (
@@ -12,8 +11,8 @@ function getFilterItemTemplate({type, isChecked, isDisabled}) {
         name="trip-filter"
         data-item="${type}"
         value="filter-${type}"
-        ${isChecked ? Attribute.CHECKED : ''}
-        ${isDisabled ? Attribute.DISABLED : ''}
+        ${isChecked ? 'checked' : ''}
+        ${isDisabled ? 'disabled' : ''}
       >
       <label class="trip-filters__filter-label" for="filter-${type}">
         ${capitalizedFirstChar(type)}

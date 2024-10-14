@@ -1,6 +1,6 @@
 import SortView from '../view/sort-view.js';
 import { render, remove } from '../framework/render.js';
-import { SortType } from '../const.js';
+import { SortType } from '../utils/const.js';
 
 export default class SortPresenter {
   #mainContainer = null;

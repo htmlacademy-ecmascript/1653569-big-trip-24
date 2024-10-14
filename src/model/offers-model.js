@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-import { showErrorMessage } from '../utils/common.js';
+import { ApiEndpoint } from '../utils/const.js';
 
 export default class OffersModel extends Observable {
   #offers = [];
@@ -18,8 +18,7 @@ export default class OffersModel extends Observable {
     try {
       this.#offers = await this.#pointsApiSevrice.offers;
     } catch (error) {
-      this.#offers = [];
-      showErrorMessage('offers');
+      throw new Error(ApiEndpoint.OFFERS);
     }
   }
 
