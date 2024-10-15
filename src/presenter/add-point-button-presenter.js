@@ -1,8 +1,7 @@
-import InfoView from '../view/info-view.js';
 import AddPointButtonView from '../view/add-point-button-view.js';
-import { render, RenderPosition } from '../framework/render.js';
+import { render } from '../framework/render.js';
 
-export default class HeaderPresenter {
+export default class addPointButtonPresenter {
   #headerContainer = null;
   #buttonComponent = null;
   #renderAddPointForm = null;
@@ -13,7 +12,6 @@ export default class HeaderPresenter {
 
   init({renderAddPointForm}) {
     this.#renderAddPointForm = renderAddPointForm;
-    this.#renderInfo();
     this.#renderAddPointButton();
   }
 
@@ -23,10 +21,6 @@ export default class HeaderPresenter {
 
   enableButton() {
     this.#buttonComponent.setDisabled(false);
-  }
-
-  #renderInfo() {
-    render(new InfoView(), this.#headerContainer, RenderPosition.AFTERBEGIN);
   }
 
   #renderAddPointButton() {

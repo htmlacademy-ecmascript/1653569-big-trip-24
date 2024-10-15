@@ -20,7 +20,7 @@ export default class PointsPresenter {
   #sortPresenter = null;
   #pointPresenters = new Map();
   #addPointPresenter = null;
-  #headerPresenter = null;
+  #addPointButtonPresenter = null;
 
   #pointListComponent = new PointListView();
   #loadingComponent = new MessageView(LoadingMessage.LOADING);
@@ -38,13 +38,13 @@ export default class PointsPresenter {
     upperLimit: TimeLimit.UPPER
   });
 
-  constructor({mainContainer, pointsModel, offersModel, destinationsModel, filterModel, headerPresenter}) {
+  constructor({mainContainer, pointsModel, offersModel, destinationsModel, filterModel, addPointButtonPresenter}) {
     this.#mainContainer = mainContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#filtersModel = filterModel;
-    this.#headerPresenter = headerPresenter;
+    this.#addPointButtonPresenter = addPointButtonPresenter;
 
     this.#addPointPresenter = new AddPointPresenter({
       offersModel: this.#offersModel,
@@ -82,7 +82,7 @@ export default class PointsPresenter {
     this.#isAddPointForm = true;
     this.#currentSort = SortType.DAY;
     this.#filtersModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#headerPresenter.disableButton();
+    this.#addPointButtonPresenter.disableButton();
     this.#addPointPresenter.init({pointListContainer: this.#pointListComponent.element});
   };
 
@@ -130,26 +130,30 @@ export default class PointsPresenter {
     render(this.#errorComponent, this.#mainContainer);
   }
 
+  #showError(error) {
+    showErrorMessage(error.message);
+  }
+
   #renderApp() {
     if (this.#isLoading) {
-      this.#headerPresenter.disableButton();
+      this.#addPointButtonPresenter.disableButton();
       this.#renderLoading();
       return;
     }
 
     if (this.#isError) {
-      this.#headerPresenter.disableButton();
+      this.#addPointButtonPresenter.disableButton();
       this.#renderError();
       return;
     }
 
     if (!this.points.length && !this.#isAddPointForm) {
-      this.#headerPresenter.enableButton();
+      this.#addPointButtonPresenter.enableButton();
       this.#renderEmptyPointList();
       return;
     }
 
-    this.#headerPresenter.enableButton();
+    this.#addPointButtonPresenter.enableButton();
     this.#renderSort();
     this.#renderPointList();
     this.#renderPoints();
@@ -190,7 +194,7 @@ export default class PointsPresenter {
           await this.#pointsModel.updatePoint(updateType, update);
         } catch (error) {
           this.#pointPresenters.get(update.id).setAborting();
-          showErrorMessage(error.message);
+          this.#showError(error);
         }
         break;
       case UserAction.ADD_POINT:
@@ -199,7 +203,7 @@ export default class PointsPresenter {
           await this.#pointsModel.addPoint(updateType, update);
         } catch (error) {
           this.#addPointPresenter.setAborting();
-          showErrorMessage(error.message);
+          this.#showError(error);
         }
         break;
       case UserAction.DELETE_POINT:
@@ -208,7 +212,7 @@ export default class PointsPresenter {
           await this.#pointsModel.deletePoint(updateType, update);
         } catch (error) {
           this.#pointPresenters.get(update.id).setAborting();
-          showErrorMessage(error.message);
+          this.#showError(error);
         }
         break;
     }
@@ -245,7 +249,7 @@ export default class PointsPresenter {
 
   #handleAddPointDestroy = () => {
     this.#isAddPointForm = false;
-    this.#headerPresenter.enableButton();
+    this.#addPointButtonPresenter.enableButton();
     if (!this.points.length) {
       this.#clearApp();
       this.#renderApp();

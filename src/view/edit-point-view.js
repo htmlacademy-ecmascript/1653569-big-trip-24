@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { BLANK_POINT, DEFAULT_PRICE, WORD_LENGTH, EditMode, EventType, DateFormat } from '../utils/const.js';
+import { BLANK_POINT, DEFAULT_PRICE, EditMode, EventType, DateFormat } from '../utils/const.js';
 import { convertDate } from '../utils/point.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -46,7 +46,7 @@ function createEditPointOfferContainerTemplate(offersTemplate) {
 function createEditPointOfferTemplate (offers, currentOffers, isDisabled) {
   if (currentOffers) {
     return currentOffers.map(({title, price, id}) => {
-      const slug = title.split(' ').filter((word) => word.length >= WORD_LENGTH).slice(0, 2).join('-').toLowerCase();
+      const slug = title.split(' ').join('-').toLowerCase();
       return (
         `<div class="event__offer-selector">
           <input

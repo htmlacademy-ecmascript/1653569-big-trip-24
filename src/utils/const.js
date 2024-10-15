@@ -1,12 +1,17 @@
-const AUTHTORIZATOIN = 'Basic 2rHj3c1lz0Ks36';
+const AUTHTORIZATOIN = 'Basic 2rHj3c1lz0K36';
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 
 const MIN_MONTH_COUNT = 0;
 const DAYS_IN_MONTH = 30;
-const CHAR_DAY = 'D';
 
 const DEFAULT_PRICE = 0;
-const WORD_LENGTH = 3;
+const DESTINATIONS_COUNT = 3;
+
+const Symbol = {
+  SEPARATOR: '&nbsp;&mdash;&nbsp;',
+  ELLIPSES: '&hellip;',
+  DAY: 'D',
+};
 
 const Milliseconds = {
   IN_HOUR: 3600000,
@@ -54,6 +59,7 @@ const DateFormat = {
   DAY: 'MMM DD',
   TIME: 'HH:mm',
   FULL: 'YYYY-MM-DD',
+  ROUTE: 'D MMM',
   IN_DAYS: 'DD[D] HH[H] mm[M]',
   IN_HOURS: 'HH[H] mm[M]',
   IN_MINUTES: 'mm[M]',
@@ -126,11 +132,11 @@ export {
   END_POINT,
   MIN_MONTH_COUNT,
   DAYS_IN_MONTH,
-  CHAR_DAY,
   DEFAULT_PRICE,
-  WORD_LENGTH,
+  DESTINATIONS_COUNT,
   BLANK_POINT,
   Milliseconds,
+  Symbol,
   EventType,
   SortType,
   FilterType,

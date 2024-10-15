@@ -2,7 +2,7 @@ import PointView from '../view/point-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import { remove, render, replace } from '../framework/render.js';
 import { EditMode, Mode, UserAction, UpdateType } from '../utils/const.js';
-import { isDatesEqual } from '../utils/point.js';
+import { isMinorChange } from '../utils/point.js';
 
 export default class PointPresenter {
   #pointListContainer = null;
@@ -147,13 +147,9 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, point.dateFrom)
-      || !isDatesEqual(this.#point.dateTo, point.dateTo)
-      || this.#point.basePrice !== point.basePrice;
-
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
-      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      isMinorChange(point, this.#point) ? UpdateType.MINOR : UpdateType.PATCH,
       point
     );
   };

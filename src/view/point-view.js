@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { convertDate, getEventDiff, convertDuration} from '../utils/point.js';
+import { convertDate, convertDuration} from '../utils/point.js';
 import { DateFormat } from '../utils/const.js';
 
 function createPointTitleTempate(destination, type) {
@@ -35,7 +35,7 @@ function createPointTemplate(point, offersPoint, destinationPoint) {
   const timeEnd = convertDate(dateTo, DateFormat.TIME);
   const dateStart = convertDate(dateFrom, DateFormat.FULL);
   const dateEnd = convertDate(dateTo, DateFormat.FULL);
-  const duration = convertDuration(getEventDiff(dateFrom, dateTo));
+  const duration = convertDuration(dateFrom, dateTo);
 
   const titleTemplate = createPointTitleTempate(destinationPoint, type);
   const offersTemplate = createPointOffersTemplate(offersPoint, offers);
