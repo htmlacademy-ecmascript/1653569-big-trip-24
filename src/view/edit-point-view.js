@@ -104,12 +104,11 @@ function createEditPointOptionsTemplate(destinationNames) {
   return destinationNames.map((destination) => `<option value="${destination}"></option>`).join('');
 }
 
-
 function createEditPointButtonNegativeTemplate(editMode, isDisabled, isDeleting) {
   return (
     editMode === EditMode.ADD
-      ? `<button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>Cancel</button>`
-      : `<button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
+      ? `<button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}}>Cancel</button>`
+      : `<button class="event__reset-btn" type="reset">${isDeleting ? 'Deleting...' : 'Delete'}</button>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>`
@@ -180,7 +179,7 @@ function createEditPointTemplate(state, offersPoint, destinationsPoint, editMode
             <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(String(basePrice))}" ${isDisabled ? 'disabled' : ''}>
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
+          <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
           ${buttonNegativeTemplate}
         </header>
 

@@ -1,6 +1,6 @@
 import Observable from '../framework/observable.js';
 import PointsAdapterService from '../service/points-adapter-service.js';
-import { UpdateType, ErrorMessage } from '../utils/const.js';
+import { UpdateType, ErrorMessage, ApiEndpoint } from '../utils/const.js';
 
 export default class PointsModel extends Observable {
   #points = [];
@@ -23,12 +23,15 @@ export default class PointsModel extends Observable {
   async init() {
     try {
       await Promise.all([this.#offersModel.init(), this.#destiationModel.init()]);
-      const points = await this.#pointsApiSevrice.points;
-      this.#points = points.map(this.#pointsAdapterService.adaptToClient);
-      this._notify(UpdateType.INIT);
+      try {
+        const points = await this.#pointsApiSevrice.points;
+        this.#points = points.map(this.#pointsAdapterService.adaptToClient);
+        this._notify(UpdateType.INIT);
+      } catch {
+        this._notify(UpdateType.ERROR, ApiEndpoint.POINTS);
+      }
     } catch (error) {
       this._notify(UpdateType.ERROR, error.message);
-      throw error;
     }
   }
 

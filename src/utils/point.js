@@ -1,4 +1,4 @@
-import { MIN_MONTH_COUNT, DAYS_IN_MONTH, Symbol, DateFormat, Milliseconds } from './const.js';
+import { MinCount, Days, DateFormat, Milliseconds } from './const.js';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -11,19 +11,20 @@ const isPresentPoint = ({dateFrom, dateTo}) => dayjs(new Date()).isBetween(dateF
 const isPastPoint = ({dateTo}) => dayjs().isAfter(dayjs(dateTo));
 
 function convertDuration(dateFrom, dateTo) {
-  const eventDiff = dayjs(dateTo).diff(dayjs(dateFrom));
-  const eventDuration = dayjs.duration(eventDiff);
+  const eventDifference = dayjs(dateTo).diff(dayjs(dateFrom));
+  const eventDuration = dayjs.duration(eventDifference);
   switch (true) {
-    case eventDiff >= Milliseconds.IN_DAY:
-      if (eventDuration.get('month') > MIN_MONTH_COUNT) {
-        const durationInDays = eventDuration.format(DateFormat.IN_DAYS);
-        const [days] = durationInDays.split(' ');
-        return durationInDays.replace(days, (parseInt(days, 10) + eventDuration.get('month') * DAYS_IN_MONTH).toString().concat(Symbol.DAY));
+    case eventDifference >= Milliseconds.IN_DAY:
+      if (eventDuration.get('month') > MinCount.MOUTH && eventDuration.get('years') < MinCount.YEAR) {
+        eventDuration.$d.days += (eventDuration.get('month') * Days.IN_MOUTH);
+      }
+      if (eventDuration.get('years') >= MinCount.YEAR) {
+        eventDuration.$d.days += (eventDuration.get('month') * Days.IN_MOUTH) + (eventDuration.get('years') * Days.IN_YEAR);
       }
       return eventDuration.format(DateFormat.IN_DAYS);
-    case eventDiff >= Milliseconds.IN_HOUR:
+    case eventDifference >= Milliseconds.IN_HOUR:
       return eventDuration.format(DateFormat.IN_HOURS);
-    case eventDiff < Milliseconds.IN_HOUR:
+    case eventDifference < Milliseconds.IN_HOUR:
       return eventDuration.format(DateFormat.IN_MINUTES);
     default:
       return '';

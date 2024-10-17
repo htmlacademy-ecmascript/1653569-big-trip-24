@@ -63,7 +63,6 @@ export default class InfoPresenter {
 
     replace(this.#infoComponent, prevInfoComponent);
     remove(prevInfoComponent);
-    render(this.#infoComponent, this.#headerContainer, RenderPosition.AFTERBEGIN);
   }
 
   destroy() {
