@@ -1,4 +1,5 @@
-import HeaderPresenter from '../presenter/header-presenter.js';
+import InfoPresenter from './info-presenter.js';
+import AddPointButtonPresenter from './add-point-button-presenter.js';
 import FilterPresenter from '../presenter/filter-presenter.js';
 import PointsPresenter from '../presenter/points-presenter.js';
 import PointsModel from '../model/points-model.js';
@@ -20,33 +21,41 @@ const destinationsModel = new DestinatonsModel({pointsApiService});
 const pointsModel = new PointsModel({
   pointsApiService,
   offersModel,
-  destinationsModel
+  destinationsModel,
 });
 
-const headerPresenter = new HeaderPresenter({
+const infoPresenter = new InfoPresenter({
+  headerContainer: headerElement,
+  pointsModel,
+  offersModel,
+  destinationsModel,
+});
+
+const addPointButtonPresenter = new AddPointButtonPresenter({
   headerContainer: headerElement
 });
 
 const filterPresenter = new FilterPresenter({
   filterContainer: filterElement,
   filterModel,
-  pointsModel
+  pointsModel,
 });
 
 const pointsPresenter = new PointsPresenter({
   mainContainer: mainElement,
-  headerPresenter,
+  addPointButtonPresenter,
   pointsModel,
   offersModel,
   destinationsModel,
-  filterModel
+  filterModel,
 });
 
 export default class MainPresenter {
   init() {
-    headerPresenter.init({renderAddPointForm: pointsPresenter.renderAddPointForm});
+    addPointButtonPresenter.init({renderAddPointForm: pointsPresenter.renderAddPointForm});
     filterPresenter.init();
     pointsPresenter.init();
     pointsModel.init();
+    infoPresenter.init();
   }
 }

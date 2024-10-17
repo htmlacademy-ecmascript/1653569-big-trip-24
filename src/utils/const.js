@@ -1,12 +1,23 @@
-const AUTHTORIZATOIN = 'Basic 2rHj3c1lz0Ks36';
+const AUTHTORIZATOIN = 'Basic 2rHj3c1lz0K36';
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 
-const MIN_MONTH_COUNT = 0;
-const DAYS_IN_MONTH = 30;
-const CHAR_DAY = 'D';
-
 const DEFAULT_PRICE = 0;
-const WORD_LENGTH = 3;
+const DESTINATIONS_COUNT = 3;
+
+const Days = {
+  IN_MOUTH: 30,
+  IN_YEAR: 365,
+};
+
+const MinCount = {
+  MOUTH: 0,
+  YEAR: 1
+};
+
+const Symbol = {
+  SEPARATOR: '&nbsp;&mdash;&nbsp;',
+  ELLIPSES: '&hellip;',
+};
 
 const Milliseconds = {
   IN_HOUR: 3600000,
@@ -54,6 +65,7 @@ const DateFormat = {
   DAY: 'MMM DD',
   TIME: 'HH:mm',
   FULL: 'YYYY-MM-DD',
+  ROUTE: 'D MMM',
   IN_DAYS: 'DD[D] HH[H] mm[M]',
   IN_HOURS: 'HH[H] mm[M]',
   IN_MINUTES: 'mm[M]',
@@ -91,8 +103,9 @@ const ApiEndpoint = {
 
 const LoadingMessage = {
   LOADING: 'Loading...',
-  [ApiEndpoint.OFFERS]: 'Failed to load latest route information,<br>offers are unavailable',
-  [ApiEndpoint.DESTINATIONS]: 'Failed to load latest route information,<br>destinations are unavailable',
+  [ApiEndpoint.POINTS]: 'Failed to load latest route information,<br><b>points</b> are unavailable',
+  [ApiEndpoint.OFFERS]: 'Failed to load latest route information,<br><b>offers</b> are unavailable',
+  [ApiEndpoint.DESTINATIONS]: 'Failed to load latest route information,<br><b>destinations</b> are unavailable',
 };
 
 const ErrorMessage = {
@@ -124,13 +137,13 @@ const TimeLimit = {
 export {
   AUTHTORIZATOIN,
   END_POINT,
-  MIN_MONTH_COUNT,
-  DAYS_IN_MONTH,
-  CHAR_DAY,
   DEFAULT_PRICE,
-  WORD_LENGTH,
+  DESTINATIONS_COUNT,
   BLANK_POINT,
+  Days,
+  MinCount,
   Milliseconds,
+  Symbol,
   EventType,
   SortType,
   FilterType,

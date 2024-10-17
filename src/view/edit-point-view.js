@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalizedFirstChar } from '../utils/common.js';
-import { BLANK_POINT, DEFAULT_PRICE, WORD_LENGTH, EditMode, EventType, DateFormat } from '../utils/const.js';
+import { BLANK_POINT, DEFAULT_PRICE, EditMode, EventType, DateFormat } from '../utils/const.js';
 import { convertDate } from '../utils/point.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -46,7 +46,7 @@ function createEditPointOfferContainerTemplate(offersTemplate) {
 function createEditPointOfferTemplate (offers, currentOffers, isDisabled) {
   if (currentOffers) {
     return currentOffers.map(({title, price, id}) => {
-      const slug = title.split(' ').filter((word) => word.length >= WORD_LENGTH).slice(0, 2).join('-').toLowerCase();
+      const slug = title.split(' ').join('-').toLowerCase();
       return (
         `<div class="event__offer-selector">
           <input
@@ -104,12 +104,11 @@ function createEditPointOptionsTemplate(destinationNames) {
   return destinationNames.map((destination) => `<option value="${destination}"></option>`).join('');
 }
 
-
 function createEditPointButtonNegativeTemplate(editMode, isDisabled, isDeleting) {
   return (
     editMode === EditMode.ADD
-      ? `<button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>Cancel</button>`
-      : `<button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
+      ? `<button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}}>Cancel</button>`
+      : `<button class="event__reset-btn" type="reset">${isDeleting ? 'Deleting...' : 'Delete'}</button>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>`
@@ -180,7 +179,7 @@ function createEditPointTemplate(state, offersPoint, destinationsPoint, editMode
             <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(String(basePrice))}" ${isDisabled ? 'disabled' : ''}>
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
+          <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
           ${buttonNegativeTemplate}
         </header>
 

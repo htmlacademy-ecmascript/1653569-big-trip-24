@@ -17,7 +17,7 @@ export default class DestinatonsModel extends Observable {
   async init() {
     try {
       this.#destinations = await this.#pointsApiSevrice.destinations;
-    } catch (error) {
+    } catch {
       throw new Error(ApiEndpoint.DESTINATIONS);
     }
   }

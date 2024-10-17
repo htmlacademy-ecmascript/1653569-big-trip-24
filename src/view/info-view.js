@@ -1,23 +1,37 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import { DEFAULT_PRICE } from '../utils/const.js';
 
-function createInfoTemplate() {
+function createInfoTemplate({ route, duration, total }) {
   return (
-    `<section class="trip-main__trip-info  trip-info">
+    `<section class="trip-main__trip-info trip-info">
       <div class="trip-info__main">
-        <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
-
-        <p class="trip-info__dates">18&nbsp;&mdash;&nbsp;20 Mar</p>
+        ${route ? `<h1 class="trip-info__title">${route}</h1>` : ''}
+        ${duration ? `<p class="trip-info__dates">${duration}</p>` : ''}
       </div>
-
       <p class="trip-info__cost">
-        Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
+        Total: &euro;&nbsp;<span class="trip-info__cost-value">${total || DEFAULT_PRICE}</span>
       </p>
     </section>`
   );
 }
 
 export default class InfoView extends AbstractView {
+  #route = null;
+  #duration = null;
+  #total = DEFAULT_PRICE;
+
+  constructor({route, duration, total}) {
+    super();
+    this.#route = route;
+    this.#duration = duration;
+    this.#total = total;
+  }
+
   get template() {
-    return createInfoTemplate();
+    return createInfoTemplate({
+      route: this.#route,
+      duration: this.#duration,
+      total: this.#total
+    });
   }
 }
