@@ -5,7 +5,7 @@ import PointsPresenter from '../presenter/points-presenter.js';
 import PointsModel from '../model/points-model.js';
 import OffersModel from '../model/offers-model.js';
 import DestinatonsModel from '../model/destinations-model.js';
-import FilterModel from '../model/filters-model.js';
+import FilterModel from '../model/filter-model.js';
 import PointsApiService from '../service/points-api-service.js';
 import { AUTHTORIZATOIN, END_POINT } from '../utils/const.js';
 
