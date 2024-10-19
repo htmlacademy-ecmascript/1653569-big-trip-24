@@ -4,8 +4,8 @@ import { UpdateType, ErrorMessage, ApiEndpoint } from '../utils/const.js';
 
 export default class PointsModel extends Observable {
   #points = [];
-  #offersModel = [];
-  #destinationsModel = [];
+  #offersModel = null;
+  #destinationsModel = null;
   #pointsApiSevrice = null;
   #pointsAdapterService = new PointsAdapterService();
 

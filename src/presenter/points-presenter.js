@@ -12,10 +12,10 @@ import { filter } from '../utils/filter.js';
 
 export default class PointsPresenter {
   #mainContainer = null;
-  #pointsModel = [];
-  #offersModel = [];
-  #destinationsModel = [];
-  #filtersModel = [];
+  #pointsModel = null;
+  #offersModel = null;
+  #destinationsModel = null;
+  #filterModel = null;
 
   #sortPresenter = null;
   #pointPresenters = new Map();
@@ -43,7 +43,7 @@ export default class PointsPresenter {
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
-    this.#filtersModel = filterModel;
+    this.#filterModel = filterModel;
     this.#addPointButtonPresenter = addPointButtonPresenter;
 
     this.#addPointPresenter = new AddPointPresenter({
@@ -54,11 +54,11 @@ export default class PointsPresenter {
     });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#filtersModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
-    this.#currentFilter = this.#filtersModel.filter;
+    this.#currentFilter = this.#filterModel.filter;
     const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#currentFilter](points);
 
@@ -81,7 +81,7 @@ export default class PointsPresenter {
   renderAddPointForm = () => {
     this.#isAddPointForm = true;
     this.#currentSort = SortType.DAY;
-    this.#filtersModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#addPointButtonPresenter.disableButton();
     this.#addPointPresenter.init({pointListContainer: this.#pointListComponent.element});
   };
