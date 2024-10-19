@@ -1,6 +1,6 @@
 import { TimeLimit } from './const.js';
 
-const capitalizedFirstChar = (string) => string.replace(string[0], string[0].toUpperCase());
+const capitalizedFirstChar = (element) => element.replace(element[0], element[0].toUpperCase());
 
 const showErrorMessage = (message) => {
   const element = document.createElement('div');

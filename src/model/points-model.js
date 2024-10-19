@@ -5,7 +5,7 @@ import { UpdateType, ErrorMessage, ApiEndpoint } from '../utils/const.js';
 export default class PointsModel extends Observable {
   #points = [];
   #offersModel = [];
-  #destiationModel = [];
+  #destiationsModel = [];
   #pointsApiSevrice = null;
   #pointsAdapterService = new PointsAdapterService();
 
@@ -13,7 +13,7 @@ export default class PointsModel extends Observable {
     super();
     this.#pointsApiSevrice = pointsApiService;
     this.#offersModel = offersModel;
-    this.#destiationModel = destinationsModel;
+    this.#destiationsModel = destinationsModel;
   }
 
   get points() {
@@ -22,7 +22,7 @@ export default class PointsModel extends Observable {
 
   async init() {
     try {
-      await Promise.all([this.#offersModel.init(), this.#destiationModel.init()]);
+      await Promise.all([this.#offersModel.init(), this.#destiationsModel.init()]);
       try {
         const points = await this.#pointsApiSevrice.points;
         this.#points = points.map(this.#pointsAdapterService.adaptToClient);
